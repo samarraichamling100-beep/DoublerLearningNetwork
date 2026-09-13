@@ -1,11 +1,5 @@
 #include <iostream>
-#include <string>
-#include <algorithm>
 #include <random>
-
-
-
-
 int getNumber()
 {
     int number;
@@ -14,25 +8,20 @@ int getNumber()
     //If number is less than zero
     if(number < 0)
     {
-        std::cout << "Please enter a number higher than 0 and less than 1000" << std::endl;
+        std::cout << "Please enter a number higher than 0 and less or equal to 1000" << std::endl;
         getNumber();
     }
     //if the number range is higher than zero
     else if(number > 1000)
     {
-        std::cout << "Please enter a number lower or equal to 1000 and less than 0" << std::endl;
+        std::cout << "Please enter a number lower or equal to 1000 and greater or equal to 0" << std::endl;
         getNumber();
     }
     return number;
 }
-
-
-
-void CheckAndGetNewDistributer(int guess,int Number,std::uniform_int_distribution<int> & Distributer)
+void CheckAndGetNewDistributer(int guess,int Number,std::uniform_int_distribution<int> & Distributer,int &min,int &max)
 {
-    int min = 0;
-    int max = 1000;
-
+    //Removed min max defination here to make the min max actually work
     if (Number > guess)
     {
         //Setting the minumin to guess + 1 since the guess is smaller than Number 
@@ -43,6 +32,8 @@ void CheckAndGetNewDistributer(int guess,int Number,std::uniform_int_distributio
         //Setting the max to guess - 1 since the guess is larger than Number 
         max = guess - 1;
     }
+    std::cout << "Min : " << min << std::endl;
+    std::cout << "Max : " << max << std::endl;
 
     std::uniform_int_distribution<int> NewDistributer(min, max);
 
@@ -63,6 +54,8 @@ int main ()
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<int> Distributer(0,1000);
+    int min = 0;
+    int max = 1000;
 
     int attempts = 0;
     //Gets the Number to guess
@@ -72,10 +65,10 @@ int main ()
 
     while(TheMainNumber != guess)
     {
-        CheckAndGetNewDistributer(guess,TheMainNumber,Distributer);
+        CheckAndGetNewDistributer(guess,TheMainNumber,Distributer,min,max);
         guess = TheGuess(Distributer,gen,attempts);
     }
 
-    std::cout << "it took " << attempts << "attempts to find the number" << std::endl;
+    std::cout << "it took " << attempts << " attempts to find the number" << std::endl;
     return 0;
 }
